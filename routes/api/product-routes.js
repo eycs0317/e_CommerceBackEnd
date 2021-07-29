@@ -9,10 +9,10 @@ router.get('/', async (req, res) => {
   try {
     // be sure to include its associated Category and Tag data
     var data = await Product.findAll({
-      attributes: ['id', 'product_name', 'price', 'stock'],
+      attributes: ['id', 'product_name', 'price', 'stock', 'category_id'],
       include: [
-        {model: Tag, attributes: ['tag_name']},
-        {model: Category, attributes: ['category_name']}
+        {model: Category, attributes: ['id', 'category_name']},
+        {model: Tag, attributes: ['id', 'tag_name']}
       ]
     });
       if(!data) {
@@ -35,10 +35,10 @@ router.get('/:id', async (req, res) => {
       // be sure to include its associated Category and Tag data
     var data = await Product.findOne({
       where: {id: id},
-      attributes: ['id', 'product_name', 'price', 'stock'],
+      attributes: ['id', 'product_name', 'price', 'stock', 'category_id'],
       include: [
-        {model: Tag, attributes: ['tag_name']},
-        {model: Category, attributes: ['category_name']}
+        {model: Category, attributes: ['id', 'category_name']},
+        {model: Tag, attributes: ['id', 'tag_name']},
       ]
     });
       if(!data) {
@@ -56,11 +56,11 @@ router.get('/:id', async (req, res) => {
 // create new product
 router.post('/', (req, res) => {
   /* req.body should look like this...
-    {
-      product_name: "Basketball",
-      price: 200.00,
-      stock: 3,
-      tagIds: [1, 2, 3, 4]
+        {
+      "product_name": "Basketball",
+      "price": 200.00,
+      "stock": 3,
+      "tagIds": [1, 2, 3, 4]
     }
   */
   Product.create(req.body)
@@ -127,8 +127,24 @@ router.put('/:id', (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   // delete one product by its `id` value
+  var id = req.params.id;
+  try {
+    var data = await Product.destroy({
+      where: {
+        id: id
+      }
+    })
+    if(!data) {
+      res.status(404).json({message: 'Delete product failed!'})
+      return;
+    }
+    res.status(200).json('Product deleted')
+  }
+  catch (err) {
+    res.status(400).json(err)
+  }
 });
 
 module.exports = router;
