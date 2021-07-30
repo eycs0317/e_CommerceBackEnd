@@ -48,7 +48,7 @@
   ## Usage
   You can use any API development tool to perform CRUD operation
 
-  Example video: ()
+  Example video: (https://drive.google.com/file/d/1K5RHvDhQd9-VKfI1JORas0qZ3rojVX79/view)
 
 
   ## License

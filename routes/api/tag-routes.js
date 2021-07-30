@@ -48,7 +48,6 @@ router.post('/', async (req, res) => {
   let body = req.body;
   try {
     let respond = await Tag.create(body);
-    console.log('respond-----', respond)
     res.status(200).json({message: 'Created!!'})
   }
   catch (err) {
@@ -77,7 +76,6 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   let id = req.params.id;
-  console.log('idddddd------', id)
   try {
     let respond = await Tag.destroy({
       where: {id: id}

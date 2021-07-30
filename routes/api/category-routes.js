@@ -32,7 +32,6 @@ router.get('/:id', async (req, res) => {
       attributes: ['id', 'category_name'],
       include: {model: Product, attributes: ['id', 'product_name', 'price', 'stock', 'category_id']}
     })
-    console.log('data---', data)
     if(!data) {
       res.status(404).json({message: 'No data found!!'})
       return;
